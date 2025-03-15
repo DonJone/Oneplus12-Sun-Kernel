@@ -21,6 +21,9 @@ cp ../../kernel_patches/69_hide_stuff.patch ./
 patch -p1 -F 3 < 69_hide_stuff.patch
 cp ../../kernel_patches/hooks/new_hooks.patch ./
 patch -p1 -F 3 < new_hooks.patch
+cp ../../kernel_patches/bbr/bbrv3-5.15+.patch ./
+patch -p1 -F 3 < bbrv3-5.15+.patch
+
 cd ../
 echo "CONFIG_KSU=y" >> ./common/arch/arm64/configs/gki_defconfig
 echo "CONFIG_KSU_SUSFS_SUS_SU=n" >> ./common/arch/arm64/configs/gki_defconfig
