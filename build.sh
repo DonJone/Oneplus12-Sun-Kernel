@@ -6,7 +6,7 @@ git clone https://gitlab.com/simonpunk/susfs4ksu -b gki-android14-6.1 --depth=1 
 rm -rf /home/don/kernel_workspace/kernel_platform/common/android/abi_gki_protected_exports_*
 cd ~/kernel_workspace/kernel_platform/
 KERNEL_REPO=$(pwd)
-cd kernel_platform/common/
+cd common
 curl -LSs "https://raw.githubusercontent.com/ShirkNeko/KernelSU/main/kernel/setup.sh" | bash -s susfs-dev
 rm ~/kernel_workspace/kernel_platform/msm-kernel/android/abi_gki_protected_exports_*
 sed -i 's/ -dirty//g' ~/kernel_workspace/kernel_platform/common/scripts/setlocalversion
