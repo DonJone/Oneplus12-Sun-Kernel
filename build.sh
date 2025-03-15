@@ -47,4 +47,4 @@ sed -i 's/check_defconfig//' ./common/build.config.gki
 sed -i '$s|echo "\$res"|echo "\A15-Sun-Kim.Jongun"|' ./common/scripts/setlocalversion
 sed -i "/stable_scmversion_cmd/s/-maybe-dirty//g" ./build/kernel/kleaf/impl/stamp.bzl
 cd ../
-./kernel_platform/build_with_bazel.py -t pineapple gki
+LTO=thin ./kernel_platform/oplus/build/oplus_build_kernel.sh pineapple gki
