@@ -1,5 +1,9 @@
 # 食用说明
-一加内核开源地址：[OnePlusOSS](https://github.com/OnePlusOSS/kernel_manifest)
+  Flashing method
+  下载AK3.zip后使用Horizon Kernel Flasher刷入
+  Download AK3.zip and use Horizon Kernel Flasher to flash it
+  
 
 # 原始项目
+  Original Project
 [MKSU-SKN](https://github.com/ShirkNeko/KernelSU)
