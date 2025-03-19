@@ -26,7 +26,10 @@ patch -p1 -F 3 < bbrv3-5.15+.patch
 
 cd ../
 echo "CONFIG_KSU=y" >> ./common/arch/arm64/configs/gki_defconfig
-echo "CONFIG_KSU_SUSFS_SUS_SU=n" >> ./common/arch/arm64/configs/gki_defconfig
+echo CONFIG_KSU_MANUAL_HOOK=y >> common/arch/arm64/configs/gki_defconfig
+echo CONFIG_KSU_SUSFS_SUS_SU=n >> common/arch/arm64/configs/gki_defconfig
+
+
 echo "CONFIG_KSU_VFS=y" >> ./common/arch/arm64/configs/gki_defconfig
 echo "CONFIG_KSU_SUSFS=y" >> ./common/arch/arm64/configs/gki_defconfig
 echo "CONFIG_KSU_SUSFS_HAS_MAGIC_MOUNT=y" >> ./common/arch/arm64/configs/gki_defconfig
