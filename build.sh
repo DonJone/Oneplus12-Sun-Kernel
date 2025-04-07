@@ -55,5 +55,5 @@ sed -i '$s|echo "\$res"|echo "\A15-Sun-Kim.Jongun"|' ./common/scripts/setlocalve
 sed -i "/stable_scmversion_cmd/s/-maybe-dirty//g" ./build/kernel/kleaf/impl/stamp.bzl
 cd ../
 ./kernel_platform/oplus/build/oplus_build_kernel.sh pineapple gki
-#./kernel_platform/oplus/build/oplus_build_kernel.sh pineapple gki
+#./kernel_platform/oplus/build/oplus_build_kernel.sh sun gki
 
