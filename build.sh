@@ -1,7 +1,7 @@
 mkdir kernel_workspace && cd kernel_workspace
 repo init -u https://github.com/RealJohnGalt/opsm8650_kernel_manifest.git -b kplatform -m default.xml --depth=1
 repo sync
-git clone https://github.com/TheWildJames/kernel_patches.git
+https://github.com/ShirkNeko/SukiSU_patch.git
 git clone https://gitlab.com/simonpunk/susfs4ksu -b gki-android14-6.1 --depth=1 susfs
 #git clone https://github.com/TheWildJames/kernel_patches.git
 #git clone https://gitlab.com/simonpunk/susfs4ksu -b gki-android15-6.6 --depth=1 susfs
@@ -25,6 +25,9 @@ cp ../../SukiSU_patch/69_hide_stuff.patch ./
 patch -p1 -F 3 < 69_hide_stuff.patch
 cp ../../SukiSU_patch/hooks/new_hooks.patch ./
 patch -p1 -F 3 < new_hooks.patch
+cp ../../SukiSU_patch/kpm/patch_linux ./
+patch -p1 -F 3 < patch_linux
+
 
 #zram
 cp -r ../SukiSU_patch/other/lz4k/include/linux/* ./common/include/linux
