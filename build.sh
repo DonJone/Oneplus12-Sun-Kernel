@@ -3,6 +3,7 @@ repo init -u https://github.com/RealJohnGalt/opsm8650_kernel_manifest.git -b kpl
 repo sync
 git clone https://github.com/TheWildJames/kernel_patches.git
 git clone https://gitlab.com/simonpunk/susfs4ksu -b gki-android14-6.1 --depth=1 susfs
+git clone https://github.com/ShirkNeko/SukiSU_patch.git
 rm -rf /home/don/kernel_workspace/kernel_platform/common/android/abi_gki_protected_exports_*
 cd ~/kernel_workspace/kernel_platform/
 KERNEL_REPO=$(pwd)
