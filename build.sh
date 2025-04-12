@@ -7,7 +7,7 @@ rm -rf /home/don/kernel_workspace/kernel_platform/common/android/abi_gki_protect
 cd ~/kernel_workspace/kernel_platform/
 KERNEL_REPO=$(pwd)
 cd common
-curl -LSs "https://raw.githubusercontent.com/ShirkNeko/KernelSU/main/kernel/setup.sh" | bash -s susfs-dev
+curl -LSs "https://raw.githubusercontent.com/ShirkNeko/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-dev
 rm ~/kernel_workspace/kernel_platform/msm-kernel/android/abi_gki_protected_exports_*
 sed -i 's/ -dirty//g' ~/kernel_workspace/kernel_platform/common/scripts/setlocalversion
 sed -i 's/ -dirty//g' ~/kernel_workspace/kernel_platform/msm-kernel/scripts/setlocalversion
