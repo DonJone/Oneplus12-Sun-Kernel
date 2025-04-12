@@ -16,19 +16,35 @@ cd ~/kernel_workspace/susfs
 cp ./kernel_patches/50_add_susfs_in_gki-android14-6.1.patch $KERNEL_REPO/common/
 cp ./kernel_patches/fs/* $KERNEL_REPO/common/fs/
 cp ./kernel_patches/include/linux/* $KERNEL_REPO/common/include/linux/
+
+cp -r ../SukiSU_patch/other/lz4k/include/linux/* $KERNEL_REPO/common/include/linux
+cp -r ../SukiSU_patch/other/lz4k/lib/* $KERNEL_REPO/common/lib
+cp -r ../SukiSU_patch/other/lz4k/crypto/* $KERNEL_REPO/common/crypto
+
 cd $KERNEL_REPO/common
 patch -p1 < 50_add_susfs_in_gki-android14-6.1.patch
 cp ../../kernel_patches/69_hide_stuff.patch ./
 patch -p1 -F 3 < 69_hide_stuff.patch
 cp ../../kernel_patches/hooks/new_hooks.patch ./
 patch -p1 -F 3 < new_hooks.patch
+cp ../../SukiSU_patch/other/lz4k_patch/6.1/lz4kd.patch ./
+patch -p1 -F 3 < lz4kd.patch || true
 
 cd ../
 echo "CONFIG_KSU=y" >> ./common/arch/arm64/configs/gki_defconfig
+echo "CONFIG_KPM=y" >> ./common/arch/arm64/configs/gki_defconfig
 echo CONFIG_KSU_MANUAL_HOOK=y >> common/arch/arm64/configs/gki_defconfig
 echo CONFIG_KSU_SUSFS_SUS_SU=n >> common/arch/arm64/configs/gki_defconfig
 echo CONFIG_KALLSYMS=y >> common/arch/arm64/configs/gki_defconfig
 
+echo "CONFIG_ZSMALLOC=y" >> ./common/arch/arm64/configs/gki_defconfig
+echo "CONFIG_ZRAM_WRITEBACK=y" >> ./common/arch/arm64/configs/gki_defconfig
+sed -i 's/CONFIG_ZRAM=m/CONFIG_ZRAM=y/g' ./common/arch/arm64/configs/gki_defconfig
+echo "CONFIG_ZRAM_WRITEBACK=y" >> ./common/arch/arm64/configs/gki_defconfig
+echo "CONFIG_CRYPTO_LZ4K=y" >> ./common/arch/arm64/configs/gki_defconfig
+echo "CONFIG_CRYPTO_LZ4KD=y" >> ./common/arch/arm64/configs/gki_defconfig
+echo "CONFIG_CRYPTO_LZ4HC=y" >> ./common/arch/arm64/configs/gki_defconfig
+echo "CONFIG_CRYPTO_842=y" >> ./common/arch/arm64/configs/gki_defconfig
 
 echo "CONFIG_KSU_VFS=y" >> ./common/arch/arm64/configs/gki_defconfig
 echo "CONFIG_KSU_SUSFS=y" >> ./common/arch/arm64/configs/gki_defconfig
