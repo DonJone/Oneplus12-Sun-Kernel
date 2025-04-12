@@ -1,7 +1,7 @@
 mkdir kernel_workspace && cd kernel_workspace
 repo init -u https://github.com/RealJohnGalt/opsm8650_kernel_manifest.git -b kplatform -m default.xml --depth=1
 repo sync
-https://github.com/ShirkNeko/SukiSU_patch.git
+git clone https://github.com/ShirkNeko/SukiSU_patch.git
 git clone https://gitlab.com/simonpunk/susfs4ksu -b gki-android14-6.1 --depth=1 susfs
 #git clone https://github.com/TheWildJames/kernel_patches.git
 #git clone https://gitlab.com/simonpunk/susfs4ksu -b gki-android15-6.6 --depth=1 susfs
