@@ -3,12 +3,11 @@ repo init -u https://github.com/RealJohnGalt/opsm8650_kernel_manifest.git -b kpl
 repo sync
 git clone https://github.com/TheWildJames/kernel_patches.git
 git clone https://gitlab.com/simonpunk/susfs4ksu -b gki-android14-6.1 --depth=1 susfs
-git clone https://github.com/ShirkNeko/SukiSU_patch.git
 rm -rf /home/don/kernel_workspace/kernel_platform/common/android/abi_gki_protected_exports_*
 cd ~/kernel_workspace/kernel_platform/
 KERNEL_REPO=$(pwd)
 cd common
-curl -LSs "https://raw.githubusercontent.com/ShirkNeko/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-dev
+curl -LSs "https://raw.githubusercontent.com/ShirkNeko/KernelSU/main/kernel/setup.sh" | bash -s susfs-dev
 rm ~/kernel_workspace/kernel_platform/msm-kernel/android/abi_gki_protected_exports_*
 sed -i 's/ -dirty//g' ~/kernel_workspace/kernel_platform/common/scripts/setlocalversion
 sed -i 's/ -dirty//g' ~/kernel_workspace/kernel_platform/msm-kernel/scripts/setlocalversion
@@ -16,35 +15,22 @@ cd ~/kernel_workspace/susfs
 cp ./kernel_patches/50_add_susfs_in_gki-android14-6.1.patch $KERNEL_REPO/common/
 cp ./kernel_patches/fs/* $KERNEL_REPO/common/fs/
 cp ./kernel_patches/include/linux/* $KERNEL_REPO/common/include/linux/
-
-cp -r ../SukiSU_patch/other/lz4k/include/linux/* $KERNEL_REPO/common/include/linux
-cp -r ../SukiSU_patch/other/lz4k/lib/* $KERNEL_REPO/common/lib
-cp -r ../SukiSU_patch/other/lz4k/crypto/* $KERNEL_REPO/common/crypto
-
 cd $KERNEL_REPO/common
 patch -p1 < 50_add_susfs_in_gki-android14-6.1.patch
 cp ../../kernel_patches/69_hide_stuff.patch ./
 patch -p1 -F 3 < 69_hide_stuff.patch
 cp ../../kernel_patches/hooks/new_hooks.patch ./
 patch -p1 -F 3 < new_hooks.patch
-cp ../../SukiSU_patch/other/lz4k_patch/6.1/lz4kd.patch ./
-patch -p1 -F 3 < lz4kd.patch || true
+cp ../../kernel_patches/bbr/bbrv3-5.15+.patch ./
+patch -p1 -F 3 < bbrv3-5.15+.patch
 
 cd ../
 echo "CONFIG_KSU=y" >> ./common/arch/arm64/configs/gki_defconfig
-echo "CONFIG_KPM=y" >> ./common/arch/arm64/configs/gki_defconfig
 echo CONFIG_KSU_MANUAL_HOOK=y >> common/arch/arm64/configs/gki_defconfig
 echo CONFIG_KSU_SUSFS_SUS_SU=n >> common/arch/arm64/configs/gki_defconfig
+echo "CONFIG_KPM=y" >> ./common/arch/arm64/configs/gki_defconfig
 echo CONFIG_KALLSYMS=y >> common/arch/arm64/configs/gki_defconfig
 
-echo "CONFIG_ZSMALLOC=y" >> ./common/arch/arm64/configs/gki_defconfig
-echo "CONFIG_ZRAM_WRITEBACK=y" >> ./common/arch/arm64/configs/gki_defconfig
-sed -i 's/CONFIG_ZRAM=m/CONFIG_ZRAM=y/g' ./common/arch/arm64/configs/gki_defconfig
-echo "CONFIG_ZRAM_WRITEBACK=y" >> ./common/arch/arm64/configs/gki_defconfig
-echo "CONFIG_CRYPTO_LZ4K=y" >> ./common/arch/arm64/configs/gki_defconfig
-echo "CONFIG_CRYPTO_LZ4KD=y" >> ./common/arch/arm64/configs/gki_defconfig
-echo "CONFIG_CRYPTO_LZ4HC=y" >> ./common/arch/arm64/configs/gki_defconfig
-echo "CONFIG_CRYPTO_842=y" >> ./common/arch/arm64/configs/gki_defconfig
 
 echo "CONFIG_KSU_VFS=y" >> ./common/arch/arm64/configs/gki_defconfig
 echo "CONFIG_KSU_SUSFS=y" >> ./common/arch/arm64/configs/gki_defconfig
@@ -63,7 +49,7 @@ echo "CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y" >> ./common/arch/arm64/configs/
 echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y" >> ./common/arch/arm64/configs/gki_defconfig
 echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> ./common/arch/arm64/configs/gki_defconfig
 sed -i 's/check_defconfig//' ./common/build.config.gki
-sed -i '$s|echo "\$res"|echo "\-Sun-Kim.Jongun"|' ./common/scripts/setlocalversion
+sed -i '$s|echo "\$res"|echo "\A15-Sun-Kim.Jongun"|' ./common/scripts/setlocalversion
 sed -i "/stable_scmversion_cmd/s/-maybe-dirty//g" ./build/kernel/kleaf/impl/stamp.bzl
 cd ../
 ./kernel_platform/oplus/build/oplus_build_kernel.sh pineapple gki
