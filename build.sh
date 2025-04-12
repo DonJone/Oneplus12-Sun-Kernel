@@ -30,9 +30,9 @@ patch -p1 -F 3 < patch_linux
 
 
 #zram
-cp -r ../SukiSU_patch/other/lz4k/include/linux/* ./common/include/linux
-cp -r ../SukiSU_patch/other/lz4k/lib/* ./common/lib
-cp -r ../SukiSU_patch/other/lz4k/crypto/* ./common/crypto
+cp -r ../../SukiSU_patch/other/lz4k/include/linux/* include/linux
+cp -r ../../SukiSU_patch/other/lz4k/lib/* lib
+cp -r ../../SukiSU_patch/other/lz4k/crypto/* crypto
 cp ../../SukiSU_patch/other/lz4k_patch/6.1/lz4kd.patch ./
 patch -p1 -F 3 < lz4kd.patch || true
 
