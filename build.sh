@@ -22,8 +22,7 @@ cp ../../kernel_patches/69_hide_stuff.patch ./
 patch -p1 -F 3 < 69_hide_stuff.patch
 cp ../../kernel_patches/hooks/new_hooks.patch ./
 patch -p1 -F 3 < new_hooks.patch
-cp ../../kernel_patches/bbr/bbrv3-5.15+.patch ./
-patch -p1 -F 3 < bbrv3-5.15+.patch
+
 
 cd ../
 echo "CONFIG_KSU=y" >> ./common/arch/arm64/configs/gki_defconfig
@@ -50,7 +49,7 @@ echo "CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y" >> ./common/arch/arm64/configs/
 echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y" >> ./common/arch/arm64/configs/gki_defconfig
 echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> ./common/arch/arm64/configs/gki_defconfig
 sed -i 's/check_defconfig//' ./common/build.config.gki
-sed -i '$s|echo "\$res"|echo "\A15-Sun-Kim.Jongun"|' ./common/scripts/setlocalversion
+sed -i '$s|echo "\$res"|echo "\-Sun-Kim.Jongun"|' ./common/scripts/setlocalversion
 sed -i "/stable_scmversion_cmd/s/-maybe-dirty//g" ./build/kernel/kleaf/impl/stamp.bzl
 cd ../
 ./kernel_platform/oplus/build/oplus_build_kernel.sh pineapple gki
