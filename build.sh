@@ -9,6 +9,11 @@ cd ~/kernel_workspace/kernel_platform/
 KERNEL_REPO=$(pwd)
 cd common
 curl -LSs "https://raw.githubusercontent.com/ShirkNeko/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-dev
+cd ./KernelSU
+KSU_VERSION=$(expr $(/usr/bin/git rev-list --count main) + 10606)
+export KSU_VERSION
+sed -i "s/DKSU_VERSION=12800/DKSU_VERSION=${KSU_VERSION}/" kernel/Makefile
+cd ../
 rm ~/kernel_workspace/kernel_platform/msm-kernel/android/abi_gki_protected_exports_*
 sed -i 's/ -dirty//g' ~/kernel_workspace/kernel_platform/common/scripts/setlocalversion
 sed -i 's/ -dirty//g' ~/kernel_workspace/kernel_platform/msm-kernel/scripts/setlocalversion
