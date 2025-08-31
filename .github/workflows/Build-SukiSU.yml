@@ -248,7 +248,28 @@ jobs:
 
           # LZ4KD配置
           if [ "${{ github.event.inputs.ZRAM }}" = "true" ]; then
-          CONFIG_FILE=./common/arch/arm64/configs/gki_defconfig
+            # -------------------【关键修改从此开始】-------------------
+            # 1. 首先用更可靠的方式从 Bazel 模块列表中删除 zram 和 zsmalloc
+            if [ "${{ github.event.inputs.ANDROID_VERSION }}" = "android14" ] || [ "${{ github.event.inputs.ANDROID_VERSION }}" = "android15" ]; then
+              ZSMALLOC_PATTERN="^[[:space:]]*\"mm/zsmalloc\.ko\",[[:space:]]*$"
+              ZRAM_PATTERN="^[[:space:]]*\"drivers/block/zram/zram\.ko\",[[:space:]]*$"
+              
+              if [ -e ./common/modules.bzl ]; then
+                echo "Cleaning common/modules.bzl..."
+                sed -i "/${ZSMALLOC_PATTERN}/d" ./common/modules.bzl
+                sed -i "/${ZRAM_PATTERN}/d" ./common/modules.bzl
+              fi
+
+              if [ -e ./msm-kernel/modules.bzl ]; then
+                echo "Cleaning msm-kernel/modules.bzl..."
+                sed -i "/${ZSMALLOC_PATTERN}/d" ./msm-kernel/modules.bzl
+                sed -i "/${ZRAM_PATTERN}/d" ./msm-kernel/modules.bzl
+              fi
+            fi
+            # -------------------【关键修改在此结束】-------------------
+
+            # 2. 然后再修改 defconfig 文件，将它们设为内置
+            CONFIG_FILE=./common/arch/arm64/configs/gki_defconfig
 
             if [ "${{ github.event.inputs.KERNEL_VERSION }}" = "5.10" ]; then
               echo "CONFIG_ZSMALLOC=y" >> "$CONFIG_FILE"
@@ -273,16 +294,10 @@ jobs:
             fi
 
             if [ "${{ github.event.inputs.ANDROID_VERSION }}" = "android14" ] || [ "${{ github.event.inputs.ANDROID_VERSION }}" = "android15" ]; then
-              if [  -e ./common/modules.bzl ]; then
-                sed -i 's/"drivers\/block\/zram\/zram\.ko",//g; s/"mm\/zsmalloc\.ko",//g' "./common/modules.bzl"
-              fi
-
-              if [  -e ./msm-kernel/modules.bzl ]; then
-                sed -i 's/"drivers\/block\/zram\/zram\.ko",//g; s/"mm\/zsmalloc\.ko",//g' "./msm-kernel/modules.bzl"
+              if [ -e ./msm-kernel/modules.bzl ]; then # 这里的modules.bzl已经被清理过了
                 echo "CONFIG_ZSMALLOC=y" >> "msm-kernel/arch/arm64/configs/${{ github.event.inputs.CPUD }}-GKI.config"
                 echo "CONFIG_ZRAM=y" >> "msm-kernel/arch/arm64/configs/${{ github.event.inputs.CPUD }}-GKI.config"
               fi
-              
               echo "CONFIG_MODULE_SIG_FORCE=n" >> "$CONFIG_FILE"
             elif [ "${{ github.event.inputs.KERNEL_VERSION }}" = "5.10" ] || [ "${{ github.event.inputs.KERNEL_VERSION }}" = "5.15" ]; then
               rm "common/android/gki_aarch64_modules"
