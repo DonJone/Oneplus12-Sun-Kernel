@@ -201,7 +201,7 @@ jobs:
             echo '完成LZ4KD补丁'
           fi
 
-      # 配置信息
+# 配置信息
       - name: Add Configuration Settings
         run: |
           cd kernel_workspace/kernel_platform
