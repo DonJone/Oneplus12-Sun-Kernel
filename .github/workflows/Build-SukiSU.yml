@@ -314,6 +314,9 @@ jobs:
         if: ${{ github.event.inputs.CPU == 'sm8650' || github.event.inputs.CPU == 'sm7675' }}
         run: |
           cd kernel_workspace
+          echo "Force cleaning Bazel cache before building..."
+          kernel_platform/tools/bazel clean --expunge
+          echo "Starting kernel build..."
           ./kernel_platform/build_with_bazel.py -t ${{ github.event.inputs.CPUD }} ${{ github.event.inputs.BUILD_METHOD }}
           
       - name: Fallback build kernel
