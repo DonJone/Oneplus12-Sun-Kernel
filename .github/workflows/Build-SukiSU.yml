@@ -6,74 +6,38 @@ on:
         type: choice
         description: "分支"
         required: true
-        default: sm8550
+        default: sm8650
         options:
-          - sm7550
-          - sm7675
-          - sm8450
-          - sm8475
-          - sm8550
           - sm8650
-          - sm8750
       FEIL:
         type: choice
         description: "配置文件"
         required: true
-        default: oneplus_ace2pro_v
+        default: oneplus12_v
         options:
-          - oneplus_nord_ce4_v
-          - oneplus_ace_3v_v
-          - oneplus_nord_4_v
-          - oneplus_10_pro_v
-          - oneplus_10t_v
-          - oneplus_11r_v
-          - oneplus_ace2_v
-          - oneplus_ace_pro_v
-          - oneplus_11_v
-          - oneplus_12r_v
-          - oneplus_ace2pro_v
-          - oneplus_ace3_v
-          - oneplus_open_v
           - oneplus12_v
-          - oneplus_13r
-          - oneplus_ace3_pro_v
-          - oneplus_ace5
-          - oneplus_pad2_v
-          - oneplus_13
-          - oneplus_13t
-          - oneplus_ace5_pro
           - GitHub有bug可能不显示最后一项,误使用此项
       CPUD:
         type: choice
         description: "处理器代号"
         required: true
-        default: kalama
+        default: pineapple
         options:
-          - crow
-          - waipio
-          - kalama
           - pineapple
-          - sun
       ANDROID_VERSION:
         type: choice
         description: "内核安卓版本"
         required: true
-        default: android13
+        default: android14
         options:
-          - android12
-          - android13
           - android14
-          - android15
       KERNEL_VERSION:
        type: choice
        description: "内核版本"
        required: true
-       default: "5.15"
+       default: "6.1"
        options:
-         - "5.10"
-         - "5.15"
          - "6.1"
-         - "6.6"
       BUILD_METHOD:
         type: choice
         description: "编译方式"
@@ -162,17 +126,20 @@ jobs:
           rm kernel_platform/common/android/abi_gki_protected_exports_* || echo "No protected exports!"
           rm kernel_platform/msm-kernel/android/abi_gki_protected_exports_* || echo "No protected exports!"
 
-      # 删除 -dirty 后缀
-      - name: Force remove -dirty suffix
+      # 修改脚本，使其在运行时移除-dirty后缀并更改作者
+      - name: Modify setlocalversion to clean version and set author
         run: |
           cd kernel_workspace/kernel_platform
-          sed -i 's/ -dirty//g' common/scripts/setlocalversion
-          sed -i 's/ -dirty//g' msm-kernel/scripts/setlocalversion
-          sed -i 's/ -dirty//g' external/dtc/scripts/setlocalversion
-          sed -i '$i res=$(echo "$res" | sed '\''s/-dirty//g'\'')' common/scripts/setlocalversion
+          
+          echo "Modifying common/scripts/setlocalversion..."
+          sed -i \
+            -e '$i res=$(echo "$res" | sed '\''s/-dirty//g'\'')' \
+            -e '$s|echo "\$res"|echo "Kim.Jongun"|' \
+            common/scripts/setlocalversion
+            
+          echo "Committing the script modification..."
           git add -A
-          git commit -m "Force remove -dirty suffix from kernel version"
-
+          git commit -m "MOD: setlocalversion to clean dirty suffix and set author"
       # 添加 SukiSU Ultra
       - name: Add KernelSU-SukiSU Ultra
         run: |
