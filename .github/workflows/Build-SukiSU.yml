@@ -294,7 +294,7 @@ jobs:
             fi
 
             if [ "${{ github.event.inputs.ANDROID_VERSION }}" = "android14" ] || [ "${{ github.event.inputs.ANDROID_VERSION }}" = "android15" ]; then
-              if [ -e ./msm-kernel/modules.bzl ]; then # 这里的modules.bzl已经被清理过了
+              if [ -e ./msm-kernel/modules.bzl ]; then
                 echo "CONFIG_ZSMALLOC=y" >> "msm-kernel/arch/arm64/configs/${{ github.event.inputs.CPUD }}-GKI.config"
                 echo "CONFIG_ZRAM=y" >> "msm-kernel/arch/arm64/configs/${{ github.event.inputs.CPUD }}-GKI.config"
               fi
